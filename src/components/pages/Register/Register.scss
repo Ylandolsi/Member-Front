@@ -1,0 +1,101 @@
+.Register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15px;
+  border-top: 1px solid var(--secondary);
+  .Welcome {
+    margin-top: 50px;
+    text-wrap: wrap;
+    font-size: clamp(10px, 5vw, 30px);
+    font-weight: bold;
+    color: var(--primary);
+  }
+
+  .formRegister {
+    position: relative;
+    width: 280px;
+    margin-top: 60px;
+    padding: 30px;
+    background-color: var(--secondary30);
+    border-radius: 15px;
+    label {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 35px;
+      color: var(--text70);
+    }
+
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-size: 15px;
+      background-color: var(--bg);
+      box-shadow: 0 0 0 1px var(--bg);
+      color: var(--text);
+      &:hover {
+        box-shadow: 0 0 0 1px black;
+      }
+      &:focus {
+        box-shadow: 0 0 0 2px black;
+      }
+      &::selection {
+      }
+
+      padding: 0 10px;
+      height: 35px;
+      line-height: 1;
+    }
+
+    button {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border-radius: 4px;
+      height: 35px;
+      width: 100%;
+      background-color: var(--primary20);
+      color: var(--violet-11);
+      box-shadow: 0 2px 5px black;
+      &:hover {
+        color: white;
+        background-color: var(--primary);
+      }
+      &:focus {
+        color: white;
+        box-shadow: 0 0 0 2px black;
+      }
+    }
+
+    p {
+      :root.dark & {
+        color: #fba8a8;
+      }
+      :root:not(.dark) & {
+        color: #7c1e1e;
+      }
+    }
+
+    a {
+      line-height: 50px;
+      color: var(--primary);
+    }
+    .header {
+      position: absolute;
+      top: -10px;
+      left: 0px;
+      font-weight: bold;
+      font-size: 15px;
+      background-color: var(--primary);
+      color: var(--bg);
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+  }
+}
