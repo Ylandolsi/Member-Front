@@ -5,7 +5,7 @@ import './styles.scss';
 const DropdownMenuDemo = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropTrigger = useRef<HTMLButtonElement>(null);
-  const dropdownMenu = useRef<HTMLDivElement>(null);
+  const dropdownMenu = useRef<HTMLDivElement | null>(null);
 
   const updateDropdownPosition = () => {
     if (!dropTrigger.current || !dropdownMenu.current) return;
@@ -17,13 +17,14 @@ const DropdownMenuDemo = () => {
 
     dropdownMenu.current.style.top = `${triggerRect.bottom + windowScrollTop + 5}px`;
     dropdownMenu.current.style.left = `${triggerRect.left}px`;
-
-    dropdownMenu.current.style.display = isOpen ? 'block' : 'none';
   };
 
   const toggleMenu = () => {
     setIsOpen((prevVal) => !prevVal);
     updateDropdownPosition();
+    if (dropdownMenu.current) {
+      dropdownMenu.current.style.display = isOpen ? 'block' : 'none';
+    }
   };
 
   window.addEventListener('resize', () => {

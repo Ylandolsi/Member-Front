@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { Navbar } from '../components/NavBar/NavBar';
+import { Navbar } from '../components/NavBar/NavBar.tsx';
 
 export const RootLayout = function () {
   return (
