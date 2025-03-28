@@ -1,9 +1,10 @@
 import './Login.scss';
 import { z } from 'zod';
 import useFormWithZod from '../../CustomHooks/useFormWithzod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { APIURL } from '../../../api';
+import { useAuth } from '../../Contexts/AuthContext';
 
 const loginSchema = z.object({
   username: z.string().min(5, 'Username must be at least 5 characters'),
@@ -15,6 +16,9 @@ type LoginType = z.infer<typeof loginSchema>;
 export function Login() {
   const { register, handleSubmit, errors } = useFormWithZod(loginSchema);
 
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const onSubmit = (data: LoginType) => {
     fetch(`${APIURL}/User/login`, {
       method: 'POST',
@@ -25,10 +29,9 @@ export function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         console.log('login success');
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
+        login(data);
+        navigate('/');
       })
       .catch((error) => {
         console.error('Error logging in :', error);
@@ -48,9 +51,8 @@ export function Login() {
         <input type="password" {...register('password')} />
         {errors.password && <p>{errors.password.message}</p>}
       </div>
-      <Link to="/Register">
-        {' '}
-        <a>Create an account ? </a>
+      <Link to="/Register" className="account-link">
+        Create an account?
       </Link>
 
       <button type="submit">Login</button>

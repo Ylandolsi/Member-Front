@@ -1,7 +1,7 @@
 import { ModeToggle } from '../DarkMode';
 import { LuKeyRound } from 'react-icons/lu';
 import './NavBar.scss';
-import DropdownMenuDemo from './DropDown/DropDown';
+import DropdownMenu from './DropDown/DropDown.tsx';
 export const Navbar = function () {
   return (
     <div className="NAVBAR">
@@ -28,7 +28,7 @@ export const Navbar = function () {
         </div>
 
         <div className="drop-dark">
-          <DropdownMenuDemo />
+          <DropdownMenu />
           <ModeToggle />
         </div>
       </div>

@@ -114,9 +114,8 @@ export function Register() {
           <input type="password" {...register('password')} />
           {errors.password && <p>{errors.password.message}</p>}
         </div>
-        <Link to="/login">
-          {' '}
-          <a>Already have an account ? </a>
+        <Link to="/login" className="account-link">
+          Already have an account?
         </Link>
 
         <button type="submit">Register</button>

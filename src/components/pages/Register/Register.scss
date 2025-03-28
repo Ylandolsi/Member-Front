@@ -3,10 +3,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 15px;
-  border-top: 1px solid var(--secondary);
   .Welcome {
-    margin-top: 50px;
     text-wrap: wrap;
     font-size: clamp(10px, 5vw, 30px);
     font-weight: bold;
@@ -16,7 +13,7 @@
   .formRegister {
     position: relative;
     width: 280px;
-    margin-top: 60px;
+    margin-top: 25px;
     padding: 30px;
     background-color: var(--secondary30);
     border-radius: 15px;
@@ -82,7 +79,7 @@
       }
     }
 
-    a {
+    .account-link {
       line-height: 50px;
       color: var(--primary);
     }

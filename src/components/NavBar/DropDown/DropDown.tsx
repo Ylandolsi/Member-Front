@@ -1,11 +1,26 @@
 import { useRef, useState } from 'react';
 
 import './styles.scss';
+import { useAuth } from '../../Contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const DropdownMenuDemo = () => {
+const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropTrigger = useRef<HTMLButtonElement>(null);
   const dropdownMenu = useRef<HTMLDivElement | null>(null);
+
+  const { isLoggedIn, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLoginLogout = () => {
+    if (isLoggedIn) {
+      logout();
+      navigate('/');
+    } else {
+      navigate('/login');
+    }
+    setIsOpen(false);
+  };
 
   const updateDropdownPosition = () => {
     if (!dropTrigger.current || !dropdownMenu.current) return;
@@ -46,15 +61,31 @@ const DropdownMenuDemo = () => {
         className="dropdown-trigger"
         onClick={toggleMenu}
       >
-        UserName
+        {isLoggedIn ? user?.username || 'User' : 'Guest'}
       </button>
       <div ref={dropdownMenu} className="dropdown-menu">
-        <div className="dropdown-item">My Posts </div>
-        <div className="dropdown-item">Create Post </div>
-        <div className="dropdown-item">Login Or Log Out </div>
+        {isLoggedIn ? (
+          <>
+            <div
+              className="dropdown-item"
+              onClick={() => navigate('/my-posts')}
+            >
+              My Posts
+            </div>
+            <div
+              className="dropdown-item"
+              onClick={() => navigate('/create-post')}
+            >
+              Create Post
+            </div>
+          </>
+        ) : null}
+        <div className="dropdown-item" onClick={handleLoginLogout}>
+          {isLoggedIn ? 'Logout' : 'Login'}
+        </div>
       </div>
     </div>
   );
 };
 
-export default DropdownMenuDemo;
+export default DropdownMenu;

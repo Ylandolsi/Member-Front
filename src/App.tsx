@@ -5,14 +5,15 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { RootLayout } from './layouts/RootLayout';
-import { UnloggedHome } from './components/pages/Home/Unlogged/Unlogged';
 import { Login } from './components/pages/Login/Login.tsx';
 import { Register } from './components/pages/Register/Register.tsx';
+import { Home } from './components/pages/Home/Home.tsx';
+import { AuthProvider } from './components/Contexts/AuthContext.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-      <Route index element={<UnloggedHome />}></Route>
+      <Route index element={<Home />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Register />}></Route>
     </Route>
@@ -20,7 +21,11 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;
