@@ -1,0 +1,41 @@
+.post {
+  h2,
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  .att {
+    color: var(--primary50);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  font-weight: 600;
+
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.5em;
+  padding: 20px;
+  background-color: var(--secondary40);
+  &:root.dark {
+    background-color: var(--secondary20);
+  }
+
+  .actions {
+    display: flex;
+    gap: 5px;
+  }
+
+  .delete-button {
+    background-color: var(--secondary);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(255, 105, 105);
+    }
+  }
+
+  gap: 10px;
+}

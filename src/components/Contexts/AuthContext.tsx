@@ -20,36 +20,82 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<any | null>(null);
 
-  useEffect(() => {
+  const refreshToken = () => {
+    const refreshToken = localStorage.getItem('refreshToken');
     const accessToken = localStorage.getItem('accessToken');
+    console.log('refresh token func', refreshToken, user);
+    if (refreshToken && user) {
+      fetch(`${APIURL}/Auth/refresh-token`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userName: user,
+          refreshToken: refreshToken,
+        }),
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+          throw new Error('Invalid refresh token');
+        })
+        .then((data) => {
+          console.log('data', data);
+          localStorage.setItem('accessToken', data.accessToken);
+          localStorage.setItem('refreshToken', data.refreshToken);
+        })
+        .catch((error) => {
+          console.error('Refresh token failed:', error);
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+        });
+    }
+  };
 
+  const verifyTokenGetClaims = () => {
+    const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
-      fetch(`${APIURL}/User/validate`, {
+      fetch(`${APIURL}/Auth/validate`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
         .then((res) => {
+          console.log('res');
           if (res.ok) {
             return res.json();
           }
           throw new Error('Invalid token');
         })
         .then((data) => {
+          console.log('data', data);
+
           setUser(data.username);
+          console.log('setUser', data.username);
+
           setIsLoggedIn(true);
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error('Token validation failed:', error);
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
+          setIsLoggedIn(false);
+          setUser(null);
         });
     }
+  };
+  useEffect(() => {
+    verifyTokenGetClaims();
   }, []);
 
   const login = (tokens: { accessToken: string; refreshToken: string }) => {
     localStorage.setItem('accessToken', tokens.accessToken);
     localStorage.setItem('refreshToken', tokens.refreshToken);
-    setIsLoggedIn(true);
+    console.log('verifyTokenGetClaims');
+    verifyTokenGetClaims();
   };
 
   const logout = () => {
@@ -58,6 +104,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoggedIn(false);
     setUser(null);
   };
+
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        refreshToken();
+      },
+      1000 * 60 * 5
+    );
+    // Refresh token every 5 minutes
+    return () => clearInterval(interval);
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>

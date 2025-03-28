@@ -27,14 +27,20 @@ export function Login() {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Invalid credentials');
+        }
+        return res.json();
+      })
       .then((data) => {
-        console.log('login success');
+        console.log('Login successful:', data);
         login(data);
         navigate('/');
       })
       .catch((error) => {
-        console.error('Error logging in :', error);
+        console.error('Login failed:', error);
+        throw error;
       });
   };
 

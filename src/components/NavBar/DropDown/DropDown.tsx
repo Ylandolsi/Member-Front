@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { use, useRef, useState } from 'react';
 
 import './styles.scss';
 import { useAuth } from '../../Contexts/AuthContext';
@@ -11,6 +11,9 @@ const DropdownMenu = () => {
 
   const { isLoggedIn, user, logout } = useAuth();
   const navigate = useNavigate();
+
+  console.log(user);
+  console.log('islogged', isLoggedIn);
 
   const handleLoginLogout = () => {
     if (isLoggedIn) {
@@ -27,10 +30,10 @@ const DropdownMenu = () => {
     const triggerRect = dropTrigger.current.getBoundingClientRect();
     const windowScrollTop = window.scrollY;
 
-    console.log(triggerRect);
+    console.log(triggerRect.bottom);
     console.log(windowScrollTop);
 
-    dropdownMenu.current.style.top = `${triggerRect.bottom + windowScrollTop + 5}px`;
+    dropdownMenu.current.style.top = `${triggerRect.bottom + 5}px`;
     dropdownMenu.current.style.left = `${triggerRect.left}px`;
   };
 
@@ -61,15 +64,12 @@ const DropdownMenu = () => {
         className="dropdown-trigger"
         onClick={toggleMenu}
       >
-        {isLoggedIn ? user?.username || 'User' : 'Guest'}
+        {isLoggedIn ? user || 'User' : 'Guest'}
       </button>
       <div ref={dropdownMenu} className="dropdown-menu">
         {isLoggedIn ? (
           <>
-            <div
-              className="dropdown-item"
-              onClick={() => navigate('/my-posts')}
-            >
+            <div className="dropdown-item" onClick={() => navigate('/myposts')}>
               My Posts
             </div>
             <div

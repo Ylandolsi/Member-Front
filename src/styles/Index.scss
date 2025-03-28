@@ -6,6 +6,16 @@ body {
   color: var(--text);
   background-color: var(--bg);
 }
+// p,
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//   margin: 0;
+//   padding: 0;
+// }
 
 #root {
   // padding: 20px 40px;
@@ -30,6 +40,7 @@ body {
   min-width: 380px;
   min-height: 100vh;
   font-family: 'Poppins', sans-serif;
+  padding-bottom: 50px;
 }
 
 h1 {
