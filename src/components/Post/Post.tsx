@@ -22,17 +22,18 @@ export function Post({
   const onDelete = async () => {
     const accessToken = localStorage.getItem('accessToken');
     try {
+      console.log('Deleting post with ID:', post.Id);
+      console.log('Access token:', accessToken);
       const res = await fetch(`${APIURL}/Post/${post.Id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      if (!res.ok) {
+      if (res.status != 204) {
         throw new Error('Failed to delete post');
       }
-      const data = await res.json();
-      console.log(data);
+
       window.location.reload();
       console.log('Post deleted successfully');
     } catch (err: any) {

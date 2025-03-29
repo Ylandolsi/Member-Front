@@ -72,10 +72,7 @@ const DropdownMenu = () => {
             <div className="dropdown-item" onClick={() => navigate('/myposts')}>
               My Posts
             </div>
-            <div
-              className="dropdown-item"
-              onClick={() => navigate('/create-post')}
-            >
+            <div className="dropdown-item" onClick={() => navigate('/create')}>
               Create Post
             </div>
           </>

@@ -1,10 +1,11 @@
 import './Register.scss';
 import { z } from 'zod';
 import useFormWithZod from '../../CustomHooks/useFormWithzod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { APIURL } from '../../../api';
 import { useEffect, useState } from 'react';
+import { useAuth } from '../../Contexts/AuthContext';
 
 const registerSchema = z.object({
   firstName: z.string().min(2, 'First name is required'),
@@ -23,6 +24,13 @@ const registerSchema = z.object({
 type RegisterType = z.infer<typeof registerSchema>;
 
 export function Register() {
+  const { isLoggedIn } = useAuth();
+
+  const Navigate = useNavigate();
+  if (isLoggedIn) {
+    Navigate('/');
+  }
+
   const { register, handleSubmit, errors, watch } =
     useFormWithZod(registerSchema);
   const [usernameStatus, setUsernameStatus] = useState<

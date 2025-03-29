@@ -3,6 +3,7 @@ import { APIURL } from '../../../../api';
 import { useAuth } from '../../../Contexts/AuthContext';
 import './LoggedHome.scss';
 import { Post } from '../../../Post/Post.tsx';
+import { SecondVerif } from './Verif/SecondVerif.tsx';
 
 type PostType = {
   Id: number;
@@ -12,10 +13,24 @@ type PostType = {
 };
 
 export function LoggedHome() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const localSecondVerif = localStorage.getItem('secondVerify');
+  const [secondVerify, setSecondVerify] = useState(false);
+
+  useEffect(() => {
+    if (localSecondVerif === 'true') {
+      setSecondVerify(true);
+    }
+  }, [localSecondVerif]);
+
+  console.log(
+    'Second verification status from localStorage:',
+    localSecondVerif
+  );
 
   const fetchAllPosts = async () => {
     setLoading(true);
@@ -50,13 +65,17 @@ export function LoggedHome() {
     }
   };
 
-  // Fetch posts when component mounts
   useEffect(() => {
     fetchAllPosts();
   }, []);
 
   return (
     <div className="logged-home">
+      <SecondVerif
+        apiUrl={APIURL}
+        secondVerify={secondVerify}
+        setSecondVerify={setSecondVerify}
+      />
       <h1>Welcome, {user || 'Member'}!</h1>
       <p>You are now logged into the private application</p>
 
@@ -68,9 +87,18 @@ export function LoggedHome() {
           ? posts.map((post) => (
               <Post
                 key={post.Id}
-                post={post}
+                post={
+                  secondVerify
+                    ? post
+                    : ({
+                        Id: post.Id,
+                        Title: '******',
+                        Content: '**************',
+                        Username: '********',
+                      } as PostType)
+                }
                 user={user}
-                you={post.Username === user ? '(You)' : ''}
+                you={secondVerify && post.Username === user ? '(You)' : ''}
               />
             ))
           : !loading && <p>No posts available.</p>}

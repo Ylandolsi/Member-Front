@@ -10,6 +10,7 @@ import { Register } from './components/pages/Register/Register.tsx';
 import { Home } from './components/pages/Home/Home.tsx';
 import { AuthProvider } from './components/Contexts/AuthContext.tsx';
 import { PostUser } from './components/pages/PostUser/PostUser.tsx';
+import { CreatePost } from './components/pages/CreatePost/CreatePost.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,8 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Register />}></Route>
       <Route path="/myposts" element={<PostUser />}></Route>
+      <Route path="/create" element={<CreatePost />}></Route>
+      <Route path="*" element={<div>404 Not Found</div>}></Route>
     </Route>
   )
 );

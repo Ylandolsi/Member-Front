@@ -17,7 +17,11 @@ export function Login() {
   const { register, handleSubmit, errors } = useFormWithZod(loginSchema);
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isLoggedIn } = useAuth();
+
+  if (isLoggedIn) {
+    navigate('/');
+  }
 
   const onSubmit = (data: LoginType) => {
     fetch(`${APIURL}/User/login`, {

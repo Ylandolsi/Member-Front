@@ -49,8 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         })
         .catch((error) => {
           console.error('Refresh token failed:', error);
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+          logout();
         });
     }
   };
@@ -79,11 +78,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setIsLoggedIn(true);
         })
         .catch((error) => {
-          console.error('Token validation failed:', error);
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          setIsLoggedIn(false);
-          setUser(null);
+          console.error('Refresh token failed:', error);
+          logout();
         });
     }
   };
@@ -101,6 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('secondVerify');
     setIsLoggedIn(false);
     setUser(null);
   };
@@ -110,9 +107,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       () => {
         refreshToken();
       },
-      1000 * 60 * 5
+      1000 * 60 * 3
     );
-    // Refresh token every 5 minutes
+    // Refresh token every 3  minutes
     return () => clearInterval(interval);
   }, [user]);
 

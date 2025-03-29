@@ -3,19 +3,29 @@ import { MdDarkMode } from 'react-icons/md';
 import { LuSun } from 'react-icons/lu';
 
 export function ModeToggle() {
-  const [theme, setTheme] = useState('light');
-  const toggleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-    } else {
-      setTheme('light');
+  const getSavedTheme = (): 'dark' | 'light' => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === null || savedTheme === undefined) {
+      localStorage.setItem('theme', 'light');
+      return 'light';
     }
+    return savedTheme as 'dark' | 'light';
   };
+
+  const [theme, setTheme] = useState<'dark' | 'light'>(getSavedTheme);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.classList.remove('dark', 'light');
     document.documentElement.classList.add(theme);
   }, [theme]);
+
   return (
     <div onClick={toggleTheme} className="cursor-pointer ">
       <MdDarkMode
