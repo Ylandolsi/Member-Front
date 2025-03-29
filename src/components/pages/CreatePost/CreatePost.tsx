@@ -66,7 +66,7 @@ export function CreatePost() {
       </div>
       <div>
         <label className="att">Content : </label>
-        <textarea {...register('Content')} />
+        <input {...register('Content')} />
         {errors.Content && <p>{errors.Content.message}</p>}
       </div>
       <input type="hidden" {...register('Username')} defaultValue={user} />
